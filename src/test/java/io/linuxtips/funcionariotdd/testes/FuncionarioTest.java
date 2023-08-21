@@ -1,6 +1,8 @@
 package io.linuxtips.funcionariotdd.testes;
 
 import io.linuxtips.funcionariotdd.model.Funcionario;
+import io.linuxtips.funcionariotdd.repository.FuncionarioRepository;
+import io.linuxtips.funcionariotdd.testes.mock.FuncionarioMock;
 import io.restassured.RestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
@@ -8,14 +10,16 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -26,6 +30,9 @@ public class FuncionarioTest {
     static {
         RestAssured.baseURI="HTTP://localhost:8080/funcionario";
     }
+
+    @Autowired
+    FuncionarioRepository funcionarioRepository;
 
     public Response criaFuncionario(Funcionario funcionario)throws Exception{
         RequestSpecification requestSpecification =
@@ -58,5 +65,21 @@ public class FuncionarioTest {
         }catch (Exception e){
             fail("Não foi possível cadastrar um funcionario",e);
         }
+    }
+
+    @Test
+    @DisplayName("Deve retornar todos os funcionarios cadastrados com sucesso")
+    public void deveListarTodosOsFuncionariosComSucesso(){
+        funcionarioRepository.save(FuncionarioMock.mockFuncionario());
+        List listaFuncionarios =  given().
+                when()
+                .basePath("/listar")
+                .get("")
+                .then()
+                .assertThat()
+                .spec(responseSpecification(200))
+                .and().extract().as(List.class);
+
+        assertTrue(listaFuncionarios.size()>0);
     }
 }
