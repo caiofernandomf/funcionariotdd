@@ -1,5 +1,6 @@
 package io.linuxtips.funcionariotdd.testes;
 
+import io.linuxtips.funcionariotdd.model.Funcionario;
 import io.restassured.RestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
@@ -13,15 +14,17 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@SpringBootTest
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Import(LocalStackConfig.class)
 @ActiveProfiles("test")
 public class FuncionarioTest {
 
     static {
-        RestAssured.baseURI="HTTP://localhost:8080/";
+        RestAssured.baseURI="HTTP://localhost:8080/funcionario";
     }
 
     public Response criaFuncionario(Funcionario funcionario)throws Exception{
@@ -29,7 +32,7 @@ public class FuncionarioTest {
                 given()
                         .contentType("application/json")
                         .body(funcionario);
-        return requestSpecification.post("/funcionario");
+        return requestSpecification.post("/salvar");
     }
 
     private ResponseSpecification responseSpecification(int responseStatus){
@@ -42,12 +45,16 @@ public class FuncionarioTest {
     @DisplayName("Deve cadastrar um funcionario com sucesso")
     public void deveCriarFuncionarioComSucesso(){
         try{
-            criaFuncionario(new Funcionario("123","Fernando",4000.0D))
+            Funcionario funcSalvo=
+                    criaFuncionario(new Funcionario("123","Fernando",4000.0D))
                     .then()
                     .assertThat().spec(responseSpecification(201))
                     .and()
                     .assertThat()
-                    .body("nome",equalTo("Fernando"));
+                    .body("nome",equalTo("Fernando")).extract().as(Funcionario.class);
+            assertEquals(funcSalvo.getRemuneracao(),4000.0D);
+
+
         }catch (Exception e){
             fail("Não foi possível cadastrar um funcionario",e);
         }
