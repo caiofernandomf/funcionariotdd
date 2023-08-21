@@ -70,16 +70,19 @@ public class FuncionarioTest {
     @Test
     @DisplayName("Deve retornar todos os funcionarios cadastrados com sucesso")
     public void deveListarTodosOsFuncionariosComSucesso(){
-        funcionarioRepository.save(FuncionarioMock.mockFuncionario());
-        List listaFuncionarios =  given().
+        funcionarioRepository.saveAll(FuncionarioMock.mockListFuncionarios());
+
+        List<Funcionario> lista =
+                given().
                 when()
                 .basePath("/listar")
                 .get("")
                 .then()
                 .assertThat()
                 .spec(responseSpecification(200))
-                .and().extract().as(List.class);
+                .and().extract().jsonPath().getList(".", Funcionario.class);
 
-        assertTrue(listaFuncionarios.size()>0);
+        assertTrue(lista.size()>0);
+
     }
 }

@@ -8,11 +8,28 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 @DynamoDBTable(tableName = "funcionarios")
 public class Funcionario{
 
+        public void setId(String id) {
+                this.id = id;
+        }
+
+        public void setNome(String nome) {
+                this.nome = nome;
+        }
+
+        public void setRemuneracao(Double remuneracao) {
+                this.remuneracao = remuneracao;
+        }
+
+
         private String id;
 
         private  String nome;
 
         private Double remuneracao;
+
+        public Funcionario(){
+
+        }
 
         public Funcionario(String id, String nome, Double remuneracao) {
                 this.id = id;
