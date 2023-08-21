@@ -85,4 +85,25 @@ public class FuncionarioTest {
         assertTrue(lista.size()>0);
 
     }
+
+    @Test
+    @DisplayName("Deve retornar um funcionário pelo id com sucesso")
+    public void deveRetornarFuncionarioComSucesso(){
+        funcionarioRepository.save(FuncionarioMock.mockFuncionario());
+
+        Funcionario funcionario =
+        given().
+                when()
+                .basePath("/")
+                .get("/456")
+                .then()
+                .assertThat()
+                .spec(responseSpecification(200))
+                .assertThat()
+                .extract().as(Funcionario.class);
+
+        assertEquals(funcionario.getNome(),FuncionarioMock.mockFuncionario().getNome());
+        assertEquals(funcionario.getId(),FuncionarioMock.mockFuncionario().getId());
+        assertEquals(funcionario.getRemuneracao(),FuncionarioMock.mockFuncionario().getRemuneracao());
+    }
 }
