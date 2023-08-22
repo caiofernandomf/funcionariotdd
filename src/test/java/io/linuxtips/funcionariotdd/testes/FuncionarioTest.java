@@ -120,4 +120,19 @@ public class FuncionarioTest {
                         .spec(responseSpecification(404));
 
     }
+
+    @Test
+    @DisplayName("Deve excluir um funcionário pelo id com sucesso")
+    public void deveExcluirUmFuncionarioComSucesso(){
+        funcionarioRepository.save(FuncionarioMock.mockFuncionario());
+
+        given()
+                .when()
+                .basePath("/")
+                .delete("/456")
+                .then()
+                .assertThat()
+                .spec(responseSpecification(204));
+
+    }
 }
