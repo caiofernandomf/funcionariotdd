@@ -31,4 +31,10 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(funcionarioService.listarFuncionarios());
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Funcionario> retornarFuncionario(@PathVariable String id){
+        return ResponseEntity.ok().body(funcionarioService.buscarFuncionarioPorId(id));
+    }
+
 }

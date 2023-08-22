@@ -5,6 +5,7 @@ import io.linuxtips.funcionariotdd.repository.FuncionarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FuncionarioService {
@@ -21,5 +22,14 @@ public class FuncionarioService {
 
     public List<Funcionario> listarFuncionarios() {
         return  funcionarioRepository.findAll();
+    }
+
+    public Funcionario buscarFuncionarioPorId(String id) {
+        Optional<Funcionario> optionalFuncionario =
+                funcionarioRepository.findById(id);
+        
+            return optionalFuncionario.get();
+
+
     }
 }
