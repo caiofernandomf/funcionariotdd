@@ -152,4 +152,20 @@ public class FuncionarioTest {
         ;
 
     }
+
+    @Test
+    @DisplayName("Deve atualizar um funcionário pelo id com sucesso")
+    public void deveAtualizarUmFuncionarioComSucesso(){
+        funcionarioRepository.save(FuncionarioMock.mockFuncionario());
+
+        given()
+                .when()
+                .basePath("/")
+                .put("/456")
+                .then()
+                .assertThat()
+                .spec(responseSpecification(200))
+        ;
+
+    }
 }
