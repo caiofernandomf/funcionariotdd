@@ -136,4 +136,20 @@ public class FuncionarioTest {
                 ;
 
     }
+
+    @Test
+    @DisplayName("Deve excluir um funcionário pelo id com erro")
+    public void deveExcluirUmFuncionarioComErro(){
+
+
+        given()
+                .when()
+                .basePath("/")
+                .delete("/456")
+                .then()
+                .assertThat()
+                .spec(responseSpecification(404))
+        ;
+
+    }
 }
