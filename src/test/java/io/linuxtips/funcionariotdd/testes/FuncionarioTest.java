@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -111,18 +110,14 @@ public class FuncionarioTest {
     @Test
     @DisplayName("Deve retornar um funcionário pelo id com erro")
     public void deveRetornarFuncionarioComErro(){
-        Funcionario funcionario;
-         assertThrows( FuncionarioNaoEncontradoException.class,()->{
+
                 given().
                         when()
                         .basePath("/")
                         .get("/456")
                         .then()
                         .assertThat()
-                        .spec(responseSpecification(404))
-                        .assertThat()
-                        .extract().as(Funcionario.class);});
-
+                        .spec(responseSpecification(404));
 
     }
 }
