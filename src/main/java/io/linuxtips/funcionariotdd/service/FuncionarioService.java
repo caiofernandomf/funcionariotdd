@@ -34,4 +34,9 @@ public class FuncionarioService {
                     .orElseThrow(()->new FuncionarioNaoEncontradoException(id));
 
     }
+
+    public String excluirFuncionarioPorId(String id) {
+        funcionarioRepository.delete(buscarFuncionarioPorId(id));
+        return "Funcionário excluído com sucesso";
+    }
 }

@@ -37,4 +37,12 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(funcionarioService.buscarFuncionarioPorId(id));
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<String> deletarFuncionario(@PathVariable String id){
+
+                funcionarioService.excluirFuncionarioPorId(id);
+                return ResponseEntity.noContent().build();
+    }
+
 }

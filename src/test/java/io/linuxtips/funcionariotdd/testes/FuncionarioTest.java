@@ -132,7 +132,8 @@ public class FuncionarioTest {
                 .delete("/456")
                 .then()
                 .assertThat()
-                .spec(responseSpecification(204));
+                .spec(responseSpecification(204))
+                ;
 
     }
 }
