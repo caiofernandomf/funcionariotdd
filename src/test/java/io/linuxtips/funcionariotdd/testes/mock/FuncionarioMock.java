@@ -17,4 +17,8 @@ public class FuncionarioMock {
                 new Funcionario("987","Jefferson",2500.0D)
         );
     }
+
+    public static Funcionario mockFuncionarioAhAlterar(){
+        return new Funcionario(null,"Cebolinha",1200000.0D);
+    }
 }

@@ -5,6 +5,7 @@ import io.linuxtips.funcionariotdd.repository.FuncionarioRepository;
 import io.linuxtips.funcionariotdd.testes.mock.FuncionarioMock;
 import io.restassured.RestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -158,14 +159,21 @@ public class FuncionarioTest {
     public void deveAtualizarUmFuncionarioComSucesso(){
         funcionarioRepository.save(FuncionarioMock.mockFuncionario());
 
-        given()
+
+        Funcionario funcionario =given()
                 .when()
                 .basePath("/")
+                .contentType(ContentType.JSON)
+                .body(FuncionarioMock.mockFuncionarioAhAlterar())
                 .put("/456")
                 .then()
                 .assertThat()
-                .spec(responseSpecification(200))
+                .spec(responseSpecification(200)).extract().as(Funcionario.class)
         ;
+
+        assertEquals(funcionario.getId(),"456");
+        assertEquals(funcionario.getNome(),FuncionarioMock.mockFuncionarioAhAlterar().getNome());
+        assertEquals(funcionario.getRemuneracao(),FuncionarioMock.mockFuncionarioAhAlterar().getRemuneracao());
 
     }
 }

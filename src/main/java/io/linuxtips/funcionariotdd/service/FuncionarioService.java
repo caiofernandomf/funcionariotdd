@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class FuncionarioService {
@@ -38,5 +39,13 @@ public class FuncionarioService {
     public String excluirFuncionarioPorId(String id) {
         funcionarioRepository.delete(buscarFuncionarioPorId(id));
         return "Funcionário excluído com sucesso";
+    }
+
+    public Funcionario alterarFuncionarioPorId(String id,Funcionario funcionario) {
+        Funcionario funcionarioAsalvar = buscarFuncionarioPorId(id);
+        funcionarioAsalvar.setNome(funcionario.getNome());
+        funcionarioAsalvar.setRemuneracao(funcionario.getRemuneracao());
+
+        return funcionarioRepository.save(funcionarioAsalvar);
     }
 }

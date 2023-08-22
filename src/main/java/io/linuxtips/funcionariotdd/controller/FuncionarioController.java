@@ -41,8 +41,15 @@ public class FuncionarioController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deletarFuncionario(@PathVariable String id){
 
-                funcionarioService.excluirFuncionarioPorId(id);
-                return ResponseEntity.noContent().build();
+            funcionarioService.excluirFuncionarioPorId(id);
+            return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Funcionario> alterarFuncionario(@PathVariable String id,@RequestBody Funcionario funcionario){
+
+        return ResponseEntity.ok().body(funcionarioService.alterarFuncionarioPorId(id,funcionario));
     }
 
 }
